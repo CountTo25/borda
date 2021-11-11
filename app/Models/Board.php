@@ -11,6 +11,7 @@ use Illuminate\Support\Collection;
  * @property boolean $is_hidden
  * @property boolean $is_readonly
  * @property boolean $is_text_only
+ * @property int $id
  *
  * @property string $name
  * @property string $short_name

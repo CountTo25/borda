@@ -12,6 +12,8 @@ use Staudenmeir\EloquentEagerLimit\HasEagerLimit;
  * @property string $content
  * @property string $ip
  * @property int $id
+ * @property string $user_name
+ *
  * @property-read  Thread $thread
  */
 class Post extends Model

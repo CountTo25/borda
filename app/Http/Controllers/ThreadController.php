@@ -25,7 +25,7 @@ class ThreadController extends Controller
         /** @var Thread $thread */
         $thread = Thread::with('board')->firstWhere('id', $data['thread_id']);
 
-        if ($data['user_name'] === null) {
+        if (!array_key_exists('user_name', $data) || $data['user_name'] === null) {
             $data['user_name'] = $thread->board->default_username;
         }
 
@@ -39,11 +39,12 @@ class ThreadController extends Controller
             $thread->timestamps = false;
         }
 
-        DB::transaction(function() use ($data, $thread) {
-            Post::create($data);
+        $post = null;
+        DB::transaction(function() use ($data, $thread, &$post) {
+            $post = Post::create($data);
             $thread->update(['post_count' => $thread->post_count + 1]);
         });
-        return response()->json(['success' => 'created']);
+        return response()->json(['success' => 'created', 'post_id' => $post->id]);
     }
 
     public function createThread(Request $request): JsonResponse {
