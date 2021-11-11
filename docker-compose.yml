@@ -1,0 +1,28 @@
+version: '2'
+
+services:
+  mysql:
+    image: mysql:5.7
+    platform: linux/x86_64
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 223322
+      MYSQL_DATABASE: db
+    command: --sql-mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION
+
+  app:
+    tty: true
+    image: docker.io/bitnami/laravel:8-debian-10
+    environment:
+      - DB_HOST=mysql
+      - DB_USERNAME=root
+      - DB_DATABASE=db
+      - DB_PASSWORD=223322
+      - COMPOSER_MEMORY_LIMIT=-1
+    ports:
+      - 3000:3000
+      - 6001:6001
+    volumes:
+      - ./:/app
+    # privileged: true # Privileged mode could be required to run this container under Windows
