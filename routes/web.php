@@ -16,6 +16,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', fn (Prefetcher $prefetch) => view('spa')->with($prefetch->get()));
-Route::get('/{board}', fn (Prefetcher $prefetch) => view('spa')->with($prefetch->get()));
-Route::get('/{board}/{thread}', fn (Prefetcher $prefetch) => view('spa')->with($prefetch->get()));
+Route::get('/', fn (Prefetcher $prefetch) => view('spa')->with($prefetch->get()))->name('view:app');
+Route::get('/{board}', fn (Prefetcher $prefetch) => view('spa')->with($prefetch->get()))->name('view:board');
+Route::get('/{board}/{thread}', fn (Prefetcher $prefetch) => view('spa')->with($prefetch->get()))->name('view:thread');

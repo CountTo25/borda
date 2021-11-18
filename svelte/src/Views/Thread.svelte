@@ -5,7 +5,7 @@
     import BoardTitle from "../Components/BoardTitle.svelte";
     import ThreadPreview from "../Components/ThreadPreview.svelte";
     import NewPostForm from "../Components/NewPostForm.svelte";
-import ThreadReply from "../Components/ThreadReply.svelte";
+    import ThreadReply from "../Components/ThreadReply.svelte";
 
     export let id: string;
     export let boardName: string;
@@ -16,7 +16,17 @@ import ThreadReply from "../Components/ThreadReply.svelte";
 
     $:renderable = thread !== null && thread.posts.length > 1 ? thread.posts.slice(1) : [];
     
-    getPosts();
+    //@ts-ignore
+    if ('__prefetched' in window && 'thread' in window.__prefetched) {
+        thread = new Thread();
+        //@ts-ignore
+        thread.hydrate(Thread, window.__prefetched.thread);
+        //@ts-ignore
+        delete window.__prefetched.thread;
+    } else {
+        getPosts();
+    }
+
 
     function getPosts(): void
     {

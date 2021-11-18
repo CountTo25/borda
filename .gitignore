@@ -1,8 +1,10 @@
 /node_modules
 /public/hot
 /public/storage
+/public/spa/
 /storage/*.key
 /vendor
+/svelte/public/build
 .env
 .env.backup
 .phpunit.result.cache

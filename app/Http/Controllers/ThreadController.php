@@ -67,7 +67,7 @@ class ThreadController extends Controller
         return response()->json(['thread_id' => $post->id]);
     }
 
-    public function listThreads(TSModelServer $tsapi, Request $request) {
+    public function listThreads(TSModelServer $tsapi) {
         return $tsapi->allowWith(['posts', 'latestPosts', 'firstPost', 'board'])->respond(
             Thread::class,
         );
