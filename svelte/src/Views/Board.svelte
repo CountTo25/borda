@@ -9,6 +9,8 @@
 
     import type ThreadModel from "../Models/Thread";
     import type Post from "../Models/Post";
+    import RouterLink from "../Router/RouterLink.svelte";
+import { Model } from "../Models/Support/Model";
 
     export let boardName: string;
 
@@ -17,11 +19,23 @@
 
     let showSubmit: boolean = false;
 
-    Collection.get(
-        Board,
-        [{where: 'short_name', is: boardName}],
-        ['threads.latestPosts', 'threads.firstPost', 'threads.posts']
-    ).then(r => board = r.first());
+
+    //@ts-ignore
+    if ('__prefetched' in window && 'board' in window.__prefetched) {
+        board = new Board();
+        //@ts-ignore
+        board.hydrate(Board, window.__prefetched.board);
+        //@ts-ignore
+        delete window.__prefetched.board;
+    } else {
+        Collection.get(
+            Board,
+            [{where: 'short_name', is: boardName}],
+            ['threads.latestPosts', 'threads.firstPost', 'threads.posts']
+        ).then(r => board = r.first());
+    }
+
+    
 
     function getLatestPosts(thread: ThreadModel): Post[]
     {
@@ -51,9 +65,9 @@
             <div class='row'>
             {#each board.threads as thread}
                 <div class='col-12 ps-0'>
-                <a href='#/{board.short_name}/{thread.first_post.id}/'>
+                <RouterLink href='{board.short_name}/{thread.first_post.id}/'>
                     <Thread {thread}/>
-                </a>
+                </RouterLink>
                 </div>
                 <div class='col-1'/>
                 <div class='col-11 ps-0'>

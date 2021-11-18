@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BoardController;
 use App\Http\Controllers\ThreadController;
+use App\Services\Prefetcher;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,10 +16,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/test', function() {
-    return \App\Models\Thread::with('posts', 'firstPost', 'latestPosts')->first();
-});
+Route::get('/', fn (Prefetcher $prefetch) => view('spa')->with($prefetch->get()));
+Route::get('/{board}', fn (Prefetcher $prefetch) => view('spa')->with($prefetch->get()));
+Route::get('/{board}/{thread}', fn (Prefetcher $prefetch) => view('spa')->with($prefetch->get()));

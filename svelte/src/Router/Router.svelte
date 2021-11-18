@@ -9,16 +9,17 @@ let storage = {};
 let keywords = [];
 let params = {};
 
+/*
 if (!window.location.href.includes('#')) {
     let hash = '#/';
     if (window.location.href[window.location.href.length - 1] !== '/') {
         hash = '/'+hash;
     }
     window.location.href = window.location.href + hash;
-}
+}*/
 
 
-let urn = window.location.hash.replace('#', '');
+let urn = window.location.pathname;//window.location.hash.replace('#', '');
 let view = null;
 let layout = null;
 let inject = {};
@@ -80,7 +81,7 @@ function getView(urn) {
 
 function onBrowserHistory(e) {
     changeTrigger = !changeTrigger;
-    let route = window.location.hash.replace('/', '').replace('#', ''); //thats you, loser
+    let route = window.location.pathname.replace('/', '').replace('#', '');
     route = route.length === 0 ? '/' : '/'+route;
     pass = {};
     if (route in storage) {
@@ -90,15 +91,7 @@ function onBrowserHistory(e) {
 }
 
 window.addEventListener('hashchange', onBrowserHistory);
-
-
-window.routing = {
-    goto: function(route = '', pass = {}) {
-        window.location.href = window.location.href.replace(window.location.hash, '')+'#'+route;
-        storage[route] = pass;
-        inject = pass;
-    }
-}
+window.onpopstate = onBrowserHistory;
 
 function captureRoute(urn) {
     let args = [];
