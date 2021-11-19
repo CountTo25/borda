@@ -10,7 +10,6 @@
     import type ThreadModel from "../Models/Thread";
     import type Post from "../Models/Post";
     import RouterLink from "../Router/RouterLink.svelte";
-import { Model } from "../Models/Support/Model";
 
     export let boardName: string;
 
@@ -20,6 +19,7 @@ import { Model } from "../Models/Support/Model";
     let showSubmit: boolean = false;
 
 
+    document.title = `/${boardName}/`;
     //@ts-ignore
     if ('__prefetched' in window && 'board' in window.__prefetched) {
         board = new Board();

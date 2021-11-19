@@ -12,10 +12,12 @@
 
     let thread: Thread = null;
     let toInclude: string[] = ['posts', 'firstPost'];
-    let showSubmit = true;
+    let showSubmit = false;
 
     $:renderable = thread !== null && thread.posts.length > 1 ? thread.posts.slice(1) : [];
     
+    document.title = `/${boardName}/ @${id}`;
+
     //@ts-ignore
     if ('__prefetched' in window && 'thread' in window.__prefetched) {
         thread = new Thread();
@@ -23,6 +25,7 @@
         thread.hydrate(Thread, window.__prefetched.thread);
         //@ts-ignore
         delete window.__prefetched.thread;
+        addTitle();
     } else {
         getPosts();
     }
@@ -31,7 +34,14 @@
     function getPosts(): void
     {
         Collection.get(Thread, [{where: 'first_post_id', is: id}], toInclude)
-            .then(r => thread = r.first());
+            .then(r => {thread = r.first(); addTitle()});
+    }
+
+    function addTitle(): void
+    {
+        if (thread.title !== null) {
+            document.title += ' — ' + thread.title;
+        }
     }
 </script>
 

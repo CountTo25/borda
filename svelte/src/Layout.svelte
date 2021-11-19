@@ -19,6 +19,9 @@ import RouterLink from "./Router/RouterLink.svelte";
 
 <div class='row header'>
     <div class='col-12 py-1'>
+        <RouterLink>
+        <span class='px-1 board-nav'>/</span>
+        </RouterLink>
         {#each boards as board}
             <RouterLink href='/{board}'><span class='px-1 board-nav'>/{board}/</span></RouterLink>
         {/each}
