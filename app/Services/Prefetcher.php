@@ -23,14 +23,14 @@ class Prefetcher
 
         if (
             $board !== null
-            && $boardModel = Board::with(['threads.latestPosts', 'threads.firstPost'])
+            && $boardModel = Board::with(['threads.latestPosts.images', 'threads.firstPost.images'])
                 ->firstWhere('short_name', $board)
         ) {
             $package['board'] = $boardModel->toArray();
         }
 
         if ($thread !== null
-            && $threadModel = Thread::with(['posts', 'firstPost'])
+            && $threadModel = Thread::with(['posts.images', 'firstPost'])
                 ->firstWhere('first_post_id', $thread)
         ) {
             $package['thread'] = $threadModel->toArray();

@@ -22,17 +22,20 @@
     document.title = `/${boardName}/`;
     //@ts-ignore
     if ('__prefetched' in window && 'board' in window.__prefetched) {
+        console.log('has prefetch');
         board = new Board();
         //@ts-ignore
         board.hydrate(Board, window.__prefetched.board);
         //@ts-ignore
         delete window.__prefetched.board;
     } else {
+        console.log('should fetch');
         Collection.get(
             Board,
             [{where: 'short_name', is: boardName}],
-            ['threads.latestPosts', 'threads.firstPost', 'threads.posts']
+            ['threads.latestPosts.images', 'threads.firstPost.images']
         ).then(r => board = r.first());
+        console.log('tried to fetch');
     }
 
     

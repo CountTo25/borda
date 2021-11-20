@@ -29,6 +29,12 @@
     margin-top: 20px;
 }
 
+.thread-body img {
+    max-height: 200px;
+    border-radius: 5px;
+    border: 1px solid var(--border);
+}
+
 .board-title {
     font-size: 2rem;
 }

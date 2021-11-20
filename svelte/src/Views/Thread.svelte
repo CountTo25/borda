@@ -11,7 +11,7 @@
     export let boardName: string;
 
     let thread: Thread = null;
-    let toInclude: string[] = ['posts', 'firstPost'];
+    let toInclude: string[] = ['posts.images', 'firstPost.images'];
     let showSubmit = false;
 
     $:renderable = thread !== null && thread.posts.length > 1 ? thread.posts.slice(1) : [];
