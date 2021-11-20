@@ -22,8 +22,8 @@ class BasicsTest extends TestCase
         $board = Board::with('threads')->first();
         $threadCount = $board->threads->count();
         $response = $this->post(route('create:thread'), [
-            'post' => ['content' => 'hello', 'user_name' => 'Anonymous'],
-            'thread' => ['board_id' => $board->id, 'title' => 'Test'],
+            'content' => 'hello', 'user_name' => 'Anonymous',
+            'board_id' => $board->id, 'title' => 'Test',
         ]);
 
         $response->assertStatus(200);

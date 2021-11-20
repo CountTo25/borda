@@ -10,7 +10,11 @@
     let board: Board = prefetched === null ? null : prefetched;
 
     if (!boardStored && board === null) {
-        Collection.get(Board, [{where: 'short_name', is: boardName}]).then(r => {storeBoard(r.first()); grabBoard() });
+        Collection.get(
+            Board, 
+            [{where: 'short_name', is: boardName}],
+            ['threads.latestPosts.images', 'threads.firstPost.images']
+        ).then(r => {storeBoard(r.first()); grabBoard() });
     } else {
         grabBoard();
     }

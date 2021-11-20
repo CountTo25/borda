@@ -18,7 +18,7 @@ class BoardController extends Controller
 
     public function listBoards(TSModelServer $tsapi, Request $request)
     {
-        return $tsapi->allowWith(['threads.latestPosts', 'threads.posts', 'threads.firstPost'])
+        return $tsapi->allowWith(['threads', 'threads.latestPosts.images', 'threads.posts', 'threads.firstPost.images'])
             ->respond(Board::class);
     }
 }

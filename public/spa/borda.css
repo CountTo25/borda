@@ -26,7 +26,23 @@
 }
 
 .thread-body .thread-content{
-    margin-top: 20px;
+}
+
+.thread-body img {
+    max-height: 150px;
+    border-radius: 5px;
+    border: 1px solid var(--border);
+    display: inline-block;
+    box-sizing: border-box;
+    margin-left: 5px;
+    margin-right: 5px;
+    vertical-align: top;
+}
+
+.img-wrap {
+    width: max-content;
+    display: inline-block;
+    max-width: 50%;
 }
 
 .board-title {

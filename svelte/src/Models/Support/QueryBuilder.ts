@@ -4,13 +4,12 @@ export function buildRequest(relations: string[], params: FilterParameters[], ta
 {
     let filters = [];
     params.forEach(p => {
-        console.warn('???');
-        console.log(p);
         filters.push({
             field: p.where,
             value: p.is,
         })
-    })
+    });
+    
     return {
         with: relations,
         filters,

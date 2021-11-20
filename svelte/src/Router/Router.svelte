@@ -34,8 +34,6 @@ function getView(urn) {
     //capture variables
     let captured = captureRoute(urn);
     keywords = captured.arguments;
-    console.log(routes);
-    console.log(captured.route);
     if (!('view' in routes[captured.route]) && !'action' in routes[captured.route]) { //ghetto way instead of checking if its a view
         view = routes[captured.route];
         document.title = basetitle;

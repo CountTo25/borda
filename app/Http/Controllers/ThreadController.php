@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\NewPostRequest;
+use App\Http\Requests\NewThreadRequest;
 use App\Models\Board;
+use App\Models\Image;
 use App\Models\Post;
 use App\Models\Thread;
 use App\Services\TSModelServer;
@@ -10,18 +13,15 @@ use Illuminate\Database\Query\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ThreadController extends Controller
 {
     //
-    public function createPost(Request $request): JsonResponse
+    public function createPost(NewPostRequest $request): JsonResponse
     {
-        $data = $request->validate([
-            'content' => ['string', 'min:1', 'max:2048', 'nullable'],
-            'thread_id' => ['required', 'integer', 'exists:threads,id'],
-            'user_name' => ['string', 'min:1', 'max:100', 'nullable'],
-        ]);
 
+        $data = $request->validated();
         /** @var Thread $thread */
         $thread = Thread::with('board')->firstWhere('id', $data['thread_id']);
 
@@ -29,10 +29,12 @@ class ThreadController extends Controller
             $data['user_name'] = $thread->board->default_username;
         }
 
-        $postable = (array_key_exists('content', $data) || array_key_exists('image', $data));
+        $postable = (array_key_exists('content', $data) || $this->hasImages($data));
 
         if (!$postable) {
-            return response()->json(['error' => 'Unable to create post. Post needs either a picture or an image'], 403);
+            return response()->json([
+                'error' => 'Unable to create post. Post needs either a picture or an image'
+            ], 403);
         }
 
         if ($thread->post_count >= $thread->board->bump_limit) {
@@ -41,26 +43,33 @@ class ThreadController extends Controller
 
         $post = null;
         DB::transaction(function() use ($data, $thread, &$post) {
+            /** @var Post $post */
             $post = Post::create($data);
+            if ($this->hasImages($data)) {
+                collect($data['images'])
+                    ->each(fn (UploadedFile $image) => $post->images()->save(Image::fromUpload($image, $post->id)));
+            }
             $thread->update(['post_count' => $thread->post_count + 1]);
         });
         return response()->json(['success' => 'created', 'post_id' => $post->id]);
     }
 
-    public function createThread(Request $request): JsonResponse {
-        $data = $request->validate([
-            'thread.title' => ['string', 'min:3', 'max:100'],
-            'thread.board_id' => ['required', 'exists:boards,id'],
-            'post.content' => ['string', 'min:3', 'max:2048'],
-            'post.user_name' => ['string', 'min:1', 'max:100'],
-        ]);
+    public function createThread(NewThreadRequest $request): JsonResponse {
 
+        $data = $request->validated();
         $post = null;
         DB::transaction(function() use ($data, &$post) {
             /** @var Thread $thread */
-            $thread = Thread::create($data['thread']);
+            $thread = Thread::create(['title' => $data['title'], 'board_id' => $data['board_id']]);
             /** @var Post $post */
-            $post = $thread->firstPost()->create($data['post']);
+            $post = $thread->firstPost()->create([
+                'content' => $data['content'],
+                'user_name' => $data['user_name'],
+            ]);
+            if ($this->hasImages($data)) {
+                collect($data['images'])
+                    ->each(fn (UploadedFile $image) => $post->images()->save(Image::fromUpload($image, $post->id)));
+            }
             $thread->update(['first_post_id' => $post->id]);
         });
 
@@ -68,7 +77,7 @@ class ThreadController extends Controller
     }
 
     public function listThreads(TSModelServer $tsapi) {
-        return $tsapi->allowWith(['posts', 'latestPosts', 'firstPost', 'board'])->respond(
+        return $tsapi->allowWith(['posts.images', 'latestPosts.images', 'firstPost.images', 'board'])->respond(
             Thread::class,
         );
     }
@@ -80,5 +89,9 @@ class ThreadController extends Controller
             null,
             fn (Builder $query) => $query->where($queryData)
         );
+    }
+
+    private function hasImages(?array $subject): bool {
+        return array_key_exists('images', $subject) && $subject['images'] !== null && count($subject['images']) > 0;
     }
 }
