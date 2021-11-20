@@ -16,6 +16,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/super/test/ok/buddy', function(\App\Services\ReplyParser $rp) {
+   return $rp->handle('>7 пидор');
+});
+
 Route::get('/', fn (Prefetcher $prefetch) => view('spa')->with($prefetch->get()))->name('view:app');
 Route::get('/{board}', fn (Prefetcher $prefetch) => view('spa')->with($prefetch->get()))->name('view:board');
 Route::get('/{board}/{thread}', fn (Prefetcher $prefetch) => view('spa')->with($prefetch->get()))->name('view:thread');

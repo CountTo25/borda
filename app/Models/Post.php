@@ -15,6 +15,7 @@ use Staudenmeir\EloquentEagerLimit\HasEagerLimit;
  * @property string $ip
  * @property int $id
  * @property string $user_name
+ * @property int $thread_id
  *
  * @property-read  Thread $thread
  * @property-read Collection<Image> $images
@@ -46,6 +47,6 @@ class Post extends Model
 
     public function mentions(): HasMany
     {
-        return $this->hasMany(PostReplies::class, 'post_id');
+        return $this->hasMany(PostReply::class, 'post_id');
     }
 }
