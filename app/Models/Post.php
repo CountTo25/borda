@@ -43,4 +43,9 @@ class Post extends Model
         });
         parent::boot();
     }
+
+    public function mentions(): HasMany
+    {
+        return $this->hasMany(PostReplies::class, 'post_id');
+    }
 }

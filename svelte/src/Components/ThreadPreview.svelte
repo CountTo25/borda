@@ -1,6 +1,8 @@
 <script lang='ts'>
     import type Thread from "../Models/Thread";
     export let thread: Thread;
+
+    let hasImages: boolean = thread.first_post.images.length > 0;
 </script>
 
 <div class='thread-body mb-2'>
@@ -12,8 +14,20 @@
             <span class='me-1'>{thread.title}</span>
             <span class='me-1'>ответы: {thread.post_count - 1}</span>
         </div>
-        <div class='col-12 thread-content'>
-            {thread.first_post.content}
+        {#if hasImages}
+            <div class='img-wrap'>
+                {#each thread.first_post.images as image}
+                    <img
+                        class='post-img'
+                        src={image.url}
+                        style={'max-width: calc('+100/thread.first_post.images.length+'% - 10px)'}
+                        alt={image.getFilename()}
+                    >
+                {/each}
+            </div>
+        {/if}
+        <div class='thread-content px-0 col'>
+            {thread.first_post.content ?? ''}
         </div>
     </div>
 </div>

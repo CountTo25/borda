@@ -59,7 +59,7 @@
         <div class='col-12 my-auto mb-1'>
             Пикчи (максимум: 3)
         </div>
-        {#each Array(imageCount) as image, index}    
+        {#each Array(imageCount) as _, index}    
         <div class='col-4 my-auto mb-1'/>
         <div class='col-8 my-auto mb-1'>
             <input type='file' class='w-100' bind:files={postData.images[index]}>

@@ -32,7 +32,6 @@ class Image extends Model
 
     public static function fromUpload(UploadedFile $source, int $post_id): self
     {
-        print_r($source);
         $image = new self();
         $image->fill([
             'name' => $source->getClientOriginalName(),

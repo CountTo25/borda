@@ -72,6 +72,12 @@
         <div class='col-8 my-auto mb-1'>
             <textarea class='w-100' placeholder='' bind:value={threadData.post.content} />
         </div>
+        {#each Array(imageCount) as _, index}    
+        <div class='col-4 my-auto mb-1'/>
+        <div class='col-8 my-auto mb-1'>
+            <input type='file' class='w-100' bind:files={threadData.post.images[index]}>
+        </div>
+        {/each}
         <div class='col-4'>
             <button on:click={()=>dispatch('close')}>Закрыть</button>
         </div>

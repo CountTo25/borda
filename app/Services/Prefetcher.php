@@ -12,8 +12,6 @@ class Prefetcher
     {
         /** @var Request $request */
         $request = request();
-        /** @var TSModelServer $ts */
-        $ts = app(TSModelServer::class);
 
         $board = $request->route('board');
         $thread = $request->route('thread');
@@ -30,7 +28,7 @@ class Prefetcher
         }
 
         if ($thread !== null
-            && $threadModel = Thread::with(['posts.images', 'firstPost'])
+            && $threadModel = Thread::with(['posts.images', 'firstPost.images'])
                 ->firstWhere('first_post_id', $thread)
         ) {
             $package['thread'] = $threadModel->toArray();

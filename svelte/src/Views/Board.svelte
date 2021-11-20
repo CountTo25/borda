@@ -29,7 +29,7 @@
         //@ts-ignore
         delete window.__prefetched.board;
     } else {
-        console.log('should fetch');
+        console.log('should fetch, boards seems to be null');
         Collection.get(
             Board,
             [{where: 'short_name', is: boardName}],
@@ -37,6 +37,8 @@
         ).then(r => board = r.first());
         console.log('tried to fetch');
     }
+
+    $: if (board !== null) console.log(board)
 
     
 
@@ -49,39 +51,38 @@
 
 </script>
 
-<BoardTitle {boardName} prefetched={board}/>
+{#if board === null}
+    ...
+{:else}
 <div class='row'>
-    {#if board === null}
-        ...
-    {:else}
-        {#if showSubmit}
-            <div class='col-0 col-lg-4'/>
-            <div class='col-12 col-lg-4'>
-                <NewThreadForm {board} on:close={()=>showSubmit = false}/>
-            </div>
-        {:else}
-            <div class='col-12 text-center'>
-                <button on:click={()=>showSubmit = true}>Создать тред</button>       
-            </div>     
-        {/if}
-        <div class='col-12 col-lg-7 mt-2'>
-            <div class='row'>
-            {#each board.threads as thread}
-                <div class='col-12 ps-0'>
-                <RouterLink href='{board.short_name}/{thread.first_post.id}/'>
-                    <Thread {thread}/>
-                </RouterLink>
-                </div>
-                <div class='col-1'/>
-                <div class='col-11 ps-0'>
-                    {#each getLatestPosts(thread) as post}
-                        <ThreadReply {post}/>
-                    {/each}
-                </div>
-            {/each}
-            </div>
+    <BoardTitle {boardName} prefetched={board}/>
+    {#if showSubmit}
+        <div class='col-0 col-lg-4'/>
+        <div class='col-12 col-lg-4'>
+            <NewThreadForm {board} on:close={()=>showSubmit = false}/>
         </div>
-
+    {:else}
+        <div class='col-12 text-center'>
+            <button on:click={()=>showSubmit = true}>Создать тред</button>       
+        </div>     
     {/if}
-    
+    <div class='col-12 col-lg-7 mt-2'>
+        <div class='row'>
+        {#each board.threads as thread}
+            <div class='col-12 ps-0'>
+            <RouterLink href='{board.short_name}/{thread.first_post.id}/'>
+                <Thread {thread}/>
+            </RouterLink>
+            </div>
+            <div class='col-1'/>
+            <div class='col-11 ps-0'>
+                {#each getLatestPosts(thread) as post}
+                    <ThreadReply {post}/>
+                {/each}
+            </div>
+        {/each}
+        </div>
+    </div>
 </div>
+{/if}
+

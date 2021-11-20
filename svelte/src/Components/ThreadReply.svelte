@@ -12,19 +12,18 @@
             <span class='me-1'>{post.user_name}</span>
         </div>
         {#if hasImages}
-            <div class='col-4'>
-                <div>
+                <div class='img-wrap'>
                     {#each post.images as image}
                         <img 
+                            class='post-img'
                             src={image.url}
-                            style={'max-width: '+100/post.images.length+'%'}
+                            style={'max-width: calc('+100/post.images.length+'% - 10px)'}
                             alt={image.getFilename()}
                         >
                     {/each}
                 </div>
-            </div>
         {/if}
-        <div class:col-8={hasImages} class:col-12={!hasImages} class='thread-content'>
+        <div class='thread-content px-0 col'>
             {post.content ?? ''}
         </div>
     </div>
