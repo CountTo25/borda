@@ -1,10 +1,11 @@
 <script lang='ts'>
     import type Post from "../Models/Post";
-    import { setHighlightPost } from "../Storage/Rendering";
+    import { setHighlightPost, rendering } from "../Storage/Rendering";
     import PlainText from "./PlainText.svelte";
     import ReferenceText from "./ReferenceText.svelte";
     export let post: Post;
-    export let highlight: boolean = false;
+    let highlight: boolean;
+    $:highlight = $rendering.highlight == post.id;
     let hasImages: boolean = post.images.length > 0;
 
     console.log(post);
@@ -45,7 +46,11 @@
         {/if}
             <div class='thread-content px-0 col'>
                 {#each post.content as content}
-                    <svelte:component this={componentMap[content.mode]} text={content.text}/>
+                    <svelte:component 
+                        on:reference={e => {console.log(e.detail.id); setHighlightPost(e.detail.id)}} 
+                        this={componentMap[content.mode]} 
+                        text={content.text}
+                    />
                 {/each}
             </div>
         </div>

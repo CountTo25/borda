@@ -67,7 +67,7 @@
         <ThreadPreview {thread}/>
         {#each renderable as post}
             <div class='col-12 col-lg-7 ps-0'>
-                <ThreadReply {post} highlight={$rendering.highlight === post.id}/>
+                <ThreadReply {post}/>
             </div>
         {/each}
     {:else}
