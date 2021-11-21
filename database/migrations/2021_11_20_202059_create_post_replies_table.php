@@ -16,6 +16,7 @@ class CreatePostRepliesTable extends Migration
         Schema::create('post_replies', function (Blueprint $table) {
             $table->foreignId('post_id')->references('id')->on('posts');
             $table->foreignId('mentioned_at_id')->references('id')->on('posts');
+            $table->boolean('same_thread');
         });
     }
 

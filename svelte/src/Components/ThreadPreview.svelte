@@ -1,8 +1,13 @@
 <script lang='ts'>
     import type Thread from "../Models/Thread";
+    import PlainText from "./PlainText.svelte";
+    import ReferenceText from "./ReferenceText.svelte";
     export let thread: Thread;
-
     let hasImages: boolean = thread.first_post.images.length > 0;
+    const componentMap = {
+        'reference': ReferenceText,
+        'plain': PlainText,
+    };
 </script>
 
 <div class='thread-body mb-2'>
@@ -27,7 +32,9 @@
             </div>
         {/if}
         <div class='thread-content px-0 col'>
-            {thread.first_post.content ?? ''}
+            {#each thread.first_post.content as content}
+                    <svelte:component this={componentMap[content.mode]} text={content.text}/>
+                {/each}
         </div>
     </div>
 </div>

@@ -16,9 +16,11 @@ class BoardController extends Controller
         return response()->json(Board::select('short_name')->pluck('short_name'));
     }
 
-    public function listBoards(TSModelServer $tsapi, Request $request)
+    public function listBoards(TSModelServer $tsapi)
     {
-        return $tsapi->allowWith(['threads', 'threads.latestPosts.images', 'threads.posts', 'threads.firstPost.images'])
-            ->respond(Board::class);
+        return $tsapi->allowWith([
+            'threads', 'threads.latestPosts.images', 'threads.posts', 'threads.firstPost.images',
+            'threads.latestPosts.mentions', 'threads.firstPost.mentions'
+        ])->respond(Board::class);
     }
 }

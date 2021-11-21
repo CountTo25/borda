@@ -4,6 +4,7 @@
 	--bg-depth-1: #464545; 
 	--bg-depth-2: #292929;
 	--text: #ffffff;
+	--text-faded: #b3b3b3;
 	--border: #dadada49;
 	background-color: var(--bg-depth-2);
 }
@@ -153,6 +154,7 @@ button:focus {
 	user-select: none;
 }
 
+
 .fs-12 {
 	font-size: 1.2rem;
 }
@@ -167,4 +169,10 @@ a svg {
 
 .b-b-1 {
 	border-bottom: 1px solid var(--border);
+}
+
+
+.of-y-scroll {
+	overflow-y: auto;
+	white-space: nowrap;
 }

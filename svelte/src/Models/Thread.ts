@@ -12,7 +12,8 @@ export default class Thread extends Model {
     ]
 
     public static transformations = {
-        'created_at': (created_at) => moment(created_at)
+        'created_at': (created_at: string) => moment(created_at),
+        'latest_posts': (latest_posts: Array<Post>) => latest_posts.reverse(),
     }
     
     public static relations = {

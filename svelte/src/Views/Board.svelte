@@ -2,7 +2,7 @@
     import Collection from "../Models/Support/Collection";
     import Board from "../Models/Board";
 
-    import Thread from "../Components/ThreadPreview.svelte";
+    import ThreadPreview from "../Components/ThreadPreview.svelte";
     import NewThreadForm from "../Components/NewThreadForm.svelte";
     import BoardTitle from "../Components/BoardTitle.svelte";
     import ThreadReply from "../Components/ThreadReply.svelte";
@@ -33,7 +33,7 @@
         Collection.get(
             Board,
             [{where: 'short_name', is: boardName}],
-            ['threads.latestPosts.images', 'threads.firstPost.images']
+            ['threads.latestPosts.images', 'threads.firstPost.images', 'threads.firstPost.mentions', 'threads.latestPosts.mentions']
         ).then(r => board = r.first());
         console.log('tried to fetch');
     }
@@ -71,7 +71,7 @@
         {#each board.threads as thread}
             <div class='col-12 ps-0'>
             <RouterLink href='{board.short_name}/{thread.first_post.id}/'>
-                <Thread {thread}/>
+                <ThreadPreview {thread}/>
             </RouterLink>
             </div>
             <div class='col-1'/>

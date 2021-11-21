@@ -1,17 +1,17 @@
 <script lang="ts">
     import Collection from "../Models/Support/Collection";
     import Thread from "../Models/Thread";
-    import type Board from "../Models/Board";
     import BoardTitle from "../Components/BoardTitle.svelte";
     import ThreadPreview from "../Components/ThreadPreview.svelte";
     import NewPostForm from "../Components/NewPostForm.svelte";
     import ThreadReply from "../Components/ThreadReply.svelte";
+    import { rendering } from "../Storage/Rendering";
 
     export let id: string;
     export let boardName: string;
 
     let thread: Thread = null;
-    let toInclude: string[] = ['posts.images', 'firstPost.images'];
+    let toInclude: string[] = ['posts.images', 'firstPost.images', 'posts.mentions', 'firstPost.mentions'];
     let showSubmit = false;
 
     $:renderable = thread !== null && thread.posts.length > 1 ? thread.posts.slice(1) : [];
@@ -66,7 +66,7 @@
         {/if}
         <ThreadPreview {thread}/>
         {#each renderable as post}
-            <div class='col-12 col-lg-7 ps-0' >
+            <div class='col-12 col-lg-7 ps-0'>
                 <ThreadReply {post}/>
             </div>
         {/each}
