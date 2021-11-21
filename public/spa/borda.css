@@ -22,7 +22,7 @@
     padding: 5px;
     border: 1px solid var(--border);
     background-color: var(--bg-depth-1);
-    cursor: pointer;
+    transition: 0.5s all;
 }
 
 .thread-body .thread-content{
@@ -69,4 +69,23 @@ a:hover {
     height: calc(100vh - 29px);
     overflow-y: scroll;
     padding-top: 29px;
+}
+
+.mention:not(.reference) {
+	font-size: 12px;
+}
+
+.mention {
+    color: var(--text-faded);
+    text-decoration: dashed;
+    padding: 3px;
+    border-radius: 3px;
+    background-color: var(--bg);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    display: inline-block;
+}
+
+.thread-body.highlight {
+    background-color: var(--bg-depth-2);
 }

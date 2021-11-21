@@ -47,6 +47,6 @@ class Post extends Model
 
     public function mentions(): HasMany
     {
-        return $this->hasMany(PostReply::class, 'post_id');
+        return $this->hasMany(PostReply::class, 'post_id')->where('same_thread', true);
     }
 }

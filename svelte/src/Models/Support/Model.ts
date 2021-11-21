@@ -13,6 +13,7 @@ export class Model {
     public static with: string[];
     public static relations: {[key: string]: {model: typeof Model, many?: boolean}} = {};
     public static transformations: {[key: string]: (value) => any} = {};
+    public static computed: {[key: string]: () => any} = {};
 
     public id: string|number;
     public with: string[];
@@ -88,7 +89,14 @@ export class Model {
                 this[relation] = new model.relations[relation].model()
                 this[relation].hydrate(model.relations[relation].model, data[relation]);
             }
+            if (relation in model.transformations) {
+                this[relation] = model.transformations[relation](this[relation]);
+            }
         })
+
+        Object.keys(model.computed).forEach((computed: string) => {
+            this[computed] = model.computed[computed]();
+        });
     }
 }
 

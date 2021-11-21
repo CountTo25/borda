@@ -20,8 +20,8 @@ class ImageTest extends TestCase
         $filename = \Str::uuid().'.jpg';
         $board = Board::with('threads')->first();
         $response = $this->post(route('create:thread'), [
-            'content' => 'hello', 'user_name' => 'Anonymous',
-            'board_id' => $board->id, 'title' => 'Test',
+            'user_name' => 'Anonymous',
+            'board_id' => $board->id, 'title' => 'Black square thread',
             'images' => [UploadedFile::fake()->image($filename)]
         ]);
 
@@ -36,7 +36,7 @@ class ImageTest extends TestCase
         $uuid = \Str::uuid();
         $response = $this->post(route('create:post'), [
             'thread_id' => Thread::first()->id,
-            'content' => 'Images!',
+            'content' => 'Look at this black square',
             'images' => [
                 UploadedFile::fake()->image("$uuid.jpg"),
             ],
@@ -57,7 +57,7 @@ class ImageTest extends TestCase
         $files = collect($filenames)->map(fn($filename) => UploadedFile::fake()->image($filename));
         $response = $this->post(route('create:post'), [
             'thread_id' => Thread::first()->id,
-            'content' => 'Many images!',
+            'content' => 'Imagine posting only one black square',
             'images' => $files->values()->toArray(),
         ]);
 

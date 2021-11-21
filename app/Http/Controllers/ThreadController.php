@@ -72,13 +72,18 @@ class ThreadController extends Controller
     public function createThread(NewThreadRequest $request): JsonResponse {
 
         $data = $request->validated();
+
+        if (array_key_exists('content', $data) && $data['content'] !== null) {
+            $data['content'] = strip_tags($data['content']);
+        }
+
         $post = null;
         DB::transaction(function() use ($data, &$post) {
             /** @var Thread $thread */
             $thread = Thread::create(['title' => $data['title'], 'board_id' => $data['board_id']]);
             /** @var Post $post */
             $post = $thread->firstPost()->create([
-                'content' => $data['content'],
+                'content' => $data['content'] ?? null,
                 'user_name' => $data['user_name'] ?? $thread->board->default_username ?? 'Anonymous',
             ]);
             if ($this->hasImages($data)) {
@@ -92,7 +97,11 @@ class ThreadController extends Controller
     }
 
     public function listThreads(TSModelServer $tsapi) {
-        return $tsapi->allowWith(['posts.images', 'latestPosts.images', 'firstPost.images', 'board'])->respond(
+        return $tsapi->allowWith([
+            'posts.mentions', 'posts.images', 'latestPosts.images',
+            'firstPost.images', 'board', 'firstPost.mentions',
+            'latestPosts.mentions',
+        ])->respond(
             Thread::class,
         );
     }
