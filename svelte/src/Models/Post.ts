@@ -10,6 +10,7 @@ export default class Post extends Model {
         'id', 
         'content',
         'user_name',
+        'own'
     ];
 
     public static transformations = {
@@ -28,6 +29,7 @@ export default class Post extends Model {
     public created_at: moment.Moment;
     public images: Image[];
     public mentions: Mention[];
+    public own: boolean;
 
     private static wrapContent(content: string): WrappedContent[]
     {

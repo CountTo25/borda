@@ -1,6 +1,7 @@
 .root.night {
 	--bg: #4e4d4d;
 	--bg-glass: #4e4d4d8f;
+	--bg-glass-depth-1: #272626c4;
 	--bg-depth-1: #464545; 
 	--bg-depth-2: #292929;
 	--text: #ffffff;
@@ -70,6 +71,7 @@ body {
 	margin: 0;
 	box-sizing: border-box;
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+	overscroll-behavior: none;
 }
 
 .row,.container-fluid {

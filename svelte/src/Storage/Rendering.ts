@@ -6,6 +6,5 @@ class Renderable {
 }
 
 export const rendering: Writable<Renderable> = writable(new Renderable());
-
 export function setHighlightPost(id: number) {rendering.update(r => {r.highlight = id; return r})}
 

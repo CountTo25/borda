@@ -18,6 +18,9 @@
             <span class='me-1'>{thread.first_post.user_name}</span>
             <span class='me-1'>{thread.title}</span>
             <span class='me-1'>ответы: {thread.post_count - 1}</span>
+            {#if thread.first_post.own}
+                <span class='me-1 text-faded'>(you)</span>
+            {/if}
         </div>
         {#if hasImages}
             <div class='img-wrap'>

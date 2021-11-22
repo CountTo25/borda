@@ -1,4 +1,4 @@
-.board-nav {
+.board-nav, .button {
     border: 1px solid var(--border);
     user-select: none;
     cursor: pointer;
@@ -64,11 +64,23 @@ a:hover {
     z-index: 9001;
 }
 
+.footer {
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    border-top: 1px solid var(--border);
+    background-color: var(--bg-glass);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    z-index: 9001;
+}
+
 .view-body {
     position: relative;
-    height: calc(100vh - 29px);
+    height: calc(100vh - 29px - 29px);
     overflow-y: scroll;
     padding-top: 29px;
+    padding-bottom: 29px;
 }
 
 .mention:not(.reference) {
@@ -88,4 +100,31 @@ a:hover {
 
 .thread-body.highlight {
     background-color: var(--bg-depth-2);
+}
+
+.text-faded {
+    color: var(--text-faded)
+}
+
+
+.popup {
+    position: fixed;
+    height: calc(100vh - 58px - 58px);
+    left: 25vw;
+    top: 58px;
+    width: 50vw;
+    background-color: var(--bg-glass-depth-1);
+    border: 1px solid var(--border);
+    z-index: 9001;
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+}
+
+.popup-wrap {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    height: 100vh;
+    width: 100vw;
+    z-index: 10;
 }

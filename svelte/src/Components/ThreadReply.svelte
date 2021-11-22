@@ -22,6 +22,9 @@
             <span class='me-1'>#{post.id}</span>
             <span class='me-1 fw-100'>{post.created_at.format('DD/MM/YY HH:mm')}</span>
             <span class='me-1'>{post.user_name}</span>
+            {#if post.own}
+                <span class='me-1 text-faded'>(you)</span>
+            {/if}
         </div>
         <div class='col-12 mb-1'>
             {#each post.mentions as mention}
