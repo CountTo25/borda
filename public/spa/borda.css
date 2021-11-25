@@ -2,6 +2,7 @@
     border: 1px solid var(--border);
     user-select: none;
     cursor: pointer;
+    display: inline-block;
 }
 
 
@@ -127,4 +128,26 @@ a:hover {
     height: 100vh;
     width: 100vw;
     z-index: 10;
+}
+
+.toolbar {
+    position: absolute;
+    bottom: 40px;
+    right: calc(1.5rem * 0.5);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    width: 16.66666667%;
+    background-color: var(--bg-glass);
+}
+
+.toolbar .title {
+    background-color:var(--bg-depth-2);
+    border-bottom: 1px solid var(--border);
+    padding: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.toolbar .content {
+    padding: 5px;
 }

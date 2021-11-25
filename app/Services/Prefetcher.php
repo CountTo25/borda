@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Board;
 use App\Models\Thread;
+use App\Models\Token;
 use Illuminate\Http\Request;
 
 class Prefetcher
@@ -38,6 +39,19 @@ class Prefetcher
 
         if (($board !== null && $boardModel === null) || ($thread !== null && $thread === null)) {
             $package['should404'] = true;
+        }
+
+        if ($request->has('token')) {
+            $package['token'] = $request->get('token');
+        }
+
+        if ($request->hasCookie('LARABA-TOKEN')) {
+            /** @var Token $token */
+            $token = Token::with('subscriptions')
+                ->firstWhere('token', $request->cookie('LARABA-TOKEN'));
+            if ($token !== null) {
+                $package['subscriptions'] = $token->subscriptions;
+            }
         }
 
         return ['prefetch' => $package];

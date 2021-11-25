@@ -13,5 +13,7 @@ class EncryptCookies extends Middleware
      */
     protected $except = [
         //
+        'LARABA-TOKEN',
+        'LARABA_RANDOM'
     ];
 }

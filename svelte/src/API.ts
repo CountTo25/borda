@@ -23,6 +23,9 @@ export default {
         headers: {accept: 'application/json'},
         body: data
     }),
+
+    generateToken: () => fetch('/api/v1/internal/create/token'),
+    setToken: (token: string) => api.post('/api/v1/internal/set/token', {token}),
 }
 
 

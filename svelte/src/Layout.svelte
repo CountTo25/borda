@@ -1,8 +1,11 @@
 <script lang='ts'>
     import api from "./API";
     import RouterLink from "./Router/RouterLink.svelte";
-    import {storeBoard} from "./Storage/Boards";
-    import {fade} from "svelte/transition";
+    import {fade, slide} from "svelte/transition";
+    import { popup, setPopup, closePopup } from "./Storage/Popup";
+    import Auth from "./Components/Popups/Auth.svelte";
+    import { toolbar, toggleToolbar } from "./Storage/Toolbar";
+    import Toolbar from "./Components/Toolbar.svelte";
 
     //here app will prefetch all the needed information for initial render
     //but if app is run from laravel view, it will try to grab injected stuff from it
@@ -16,11 +19,17 @@
     } else {
         //@ts-ignore
         boards = window.__prefetched.boards;
+        
     }
 
-    function toggleAuth(): void
+    function popupAuth(): void
     {
-        authPopup = !authPopup;
+        setPopup(Auth);
+    }
+
+    function showToolbar(): void 
+    {
+
     }
 </script>
 
@@ -42,34 +51,27 @@
 <div class='row footer'>
     <div class='col-2'/>
     <div class='col-8 text-center py-1'>
-        <span class='button px-1' on:click={toggleAuth}>
+        <span class='button px-1' on:click={popupAuth}>
             Войти
         </span>
     </div>
-    <div class='col-2 text-center py-1'>
-        <span class='button px-1' on:click={toggleAuth}>
+    <div class='col-2 text-end py-1'>
+        <span class='button px-1' on:click={toggleToolbar}>
             Подписки
         </span>
     </div>
 </div>
 
-{#if authPopup}
-<div class='popup-wrap' on:click={toggleAuth}>
-    <div class='popup' in:fade={{duration: 100}} on:click|stopPropagation>
-        <div class='row'>
-            <div class='col-12 text-center'>
-                Войти
-            </div>
-            <div class='col-12'>
-                Вы можете сгенерировать токен: он позволит отслеживать треды и посты на разных девайсах
-            </div>
-            <div class='col-12'>
-                Если вы потеряете токен, восстановить его не получится. Не теряйте его
-            </div>
-            <div class='col-12'>
-                Токен это не регистрация. Никто не будет знать, что вы пользуетесь токеном; никто не будет знать, кто является автором поста
-            </div>
+{#if $popup.open}
+    <div class='popup-wrap' on:click={closePopup}>
+        <div class='popup' in:fade={{duration: 100}} on:click|stopPropagation>
+            <svelte:component this={$popup.component}/>
         </div>
     </div>
-</div>
+{/if}
+
+{#if $toolbar.open}
+    <div class='toolbar col-2' in:slide>
+        <Toolbar/>
+    </div>
 {/if}

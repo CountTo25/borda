@@ -12,8 +12,6 @@ class TokenController extends Controller
     //
 
     public function make() {
-        $token = Str::random(10);
-        Token::create(compact('token'));
-        return compact('token');
+        
     }
 }

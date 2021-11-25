@@ -4,6 +4,8 @@
     import PlainText from "./PlainText.svelte";
     import ReferenceText from "./ReferenceText.svelte";
     export let post: Post;
+    //@ts-ignore
+    import lang from "../lang.json";
     let highlight: boolean;
     $:highlight = $rendering.highlight == post.id;
     let hasImages: boolean = post.images.length > 0;
@@ -23,7 +25,7 @@
             <span class='me-1 fw-100'>{post.created_at.format('DD/MM/YY HH:mm')}</span>
             <span class='me-1'>{post.user_name}</span>
             {#if post.own}
-                <span class='me-1 text-faded'>(you)</span>
+                <span class='me-1 text-faded'>({lang.markings.yourPost})</span>
             {/if}
         </div>
         <div class='col-12 mb-1'>

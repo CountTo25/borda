@@ -20,6 +20,8 @@ Route::get('/super/test/ok/buddy', function(\App\Services\Dactyloscopy $dactylos
     return $dactyloscopy->make();
 });
 
-Route::get('/', fn (Prefetcher $prefetch) => view('spa')->with($prefetch->get()))->name('view:app');
-Route::get('/{board}', fn (Prefetcher $prefetch) => view('spa')->with($prefetch->get()))->name('view:board');
-Route::get('/{board}/{thread}', fn (Prefetcher $prefetch) => view('spa')->with($prefetch->get()))->name('view:thread');
+Route::middleware('generate.tokens')->group(function () {
+    Route::get('/', fn (Prefetcher $prefetch) => view('spa')->with($prefetch->get()))->name('view:app');
+    Route::get('/{board}', fn (Prefetcher $prefetch) => view('spa')->with($prefetch->get()))->name('view:board');
+    Route::get('/{board}/{thread}', fn (Prefetcher $prefetch) => view('spa')->with($prefetch->get()))->name('view:thread');
+});

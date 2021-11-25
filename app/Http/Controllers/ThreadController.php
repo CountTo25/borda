@@ -9,6 +9,7 @@ use App\Models\Image;
 use App\Models\Post;
 use App\Models\PostReply;
 use App\Models\Thread;
+use App\Models\Token;
 use App\Services\ReplyParser;
 use App\Services\TSModelServer;
 use Illuminate\Database\Query\Builder;
@@ -65,6 +66,12 @@ class ThreadController extends Controller
                 });
 
             PostReply::insert($forFilling->toArray());
+
+            /** @var Token $token */
+            $token = Token::firstWhere('token', request()->cookie('LARABA-TOKEN'));
+            if ($token) {
+                $token->subscriptions()->attach($thread);
+            }
         });
         return response()->json(['success' => 'created', 'post_id' => $post->id]);
     }

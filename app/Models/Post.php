@@ -18,6 +18,7 @@ use Staudenmeir\EloquentEagerLimit\HasEagerLimit;
  * @property string $user_name
  * @property int $thread_id
  * @property int $fingerprint
+ * @property string $token
  *
  * @property-read  Thread $thread
  * @property-read Collection<Image> $images
@@ -46,6 +47,7 @@ class Post extends Model
         static::creating(function(Post $model) {
             $model->ip = request()->ip() ?? 'undefined';
             $model->fingerprint = app(Dactyloscopy::class)->make();
+            $model->token = request()->cookie('LARABA_TOKEN');
         });
         parent::boot();
     }
