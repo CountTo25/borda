@@ -1,4 +1,5 @@
 import axios from "axios";
+import Cookies from "js-cookie";
 import env from "./env.js";
 
 const config = {
@@ -24,8 +25,15 @@ export default {
         body: data
     }),
 
-    generateToken: () => fetch('/api/v1/internal/create/token'),
-    setToken: (token: string) => api.post('/api/v1/internal/set/token', {token}),
+    applyToken: (token: string) => api.post('/api/internal/v1/token/apply', {token}),
+    thread: {
+        subscribe: (thread_id: number, token: string) => api.post('/api/internal/v1/thread/subscribe/', 
+            {thread_id, token: token ?? Cookies.get('LARABA-TOKEN')}
+        ),
+        unsubscribe: (thread_id: number, token: string) => api.post('/api/internal/v1/thread/unsubscribe/', 
+            {thread_id, token: token ?? Cookies.get('LARABA-TOKEN')}
+        ),
+    }
 }
 
 

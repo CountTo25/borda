@@ -29,13 +29,11 @@
         //@ts-ignore
         delete window.__prefetched.board;
     } else {
-        console.log('should fetch, boards seems to be null');
         Collection.get(
             Board,
             [{where: 'short_name', is: boardName}],
             ['threads.latestPosts.images', 'threads.firstPost.images', 'threads.firstPost.mentions', 'threads.latestPosts.mentions']
         ).then(r => board = r.first());
-        console.log('tried to fetch');
     }
 
     $: if (board !== null) console.log(board)

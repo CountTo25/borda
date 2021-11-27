@@ -15,7 +15,7 @@ import { consumePrepender } from "./Storage/Toolbar";
 	//@ts-ignore
 	if ('subscriptions' in window.__prefetched) {
 		//@ts-ignore
-		consumePrepender(window.__prefetched.subscriptions);
+		consumePrepender(window.__prefetched.subscriptions, window.__prefetched.token);
 	}
 
 	

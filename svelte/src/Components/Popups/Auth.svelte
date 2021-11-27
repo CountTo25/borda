@@ -1,8 +1,21 @@
 <script lang="ts">
+import Cookies from "js-cookie";
+
     import API from "../../API";
-    function createToken() {
-        API.generateToken().then(r => console.log(r));
+    import { toolbar, consumePrepender } from "../../Storage/Toolbar";
+    let cookie = Cookies.get('LARABA-TOKEN');
+    let inputToken: string = $toolbar.token ?? cookie !== undefined ? cookie : null;
+
+
+    function applyToken(): void
+    {
+        API.applyToken(inputToken).then(r => {
+           consumePrepender(r.data.subscriptions, r.data.token);
+           Cookies.set('LARABA-TOKEN', r.data.token);
+        });
     }
+
+
 </script>
 
 <div class='row'>
@@ -19,13 +32,11 @@
         Токен это не регистрация. Никто не будет знать, что вы пользуетесь токеном; никто не будет знать, кто является автором поста
     </div>
 
-    <div class='col-6 px-2 text-center my-auto'>
-        <input class='w-100 mb-2'>
-        <span class='button p-2'>Ввести токен</span>
+    <div class='col-3'>
+
     </div>
     <div class='col-6 px-2 text-center my-auto'>
-        <span class='button p-2' on:click={createToken}>
-            Сгенерировать токен
-        </span>
+        <input class='w-100 mb-2' bind:value={inputToken}>
+        <span class='button p-2' on:click={applyToken}>Ввести токен</span>
     </div>
 </div>

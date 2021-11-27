@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BoardController;
 use App\Http\Controllers\ThreadController;
+use App\Http\Controllers\TokenController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,6 +25,12 @@ Route::prefix('internal/v1/')->group(function() {
     });
 
     Route::get('/list/boards', [BoardController::class, 'getBoardPaths']);
+    Route::post('/token/apply', [TokenController::class, 'apply'])->name('apply:token');
+
+    Route::prefix('thread')->group(function() {
+        Route::post('subscribe', [TokenController::class, 'subscribe']);
+        Route::post('unsubscribe', [TokenController::class, 'unsubscribe']);
+    });
 
     Route::prefix('create')->group(function() {
         Route::post('thread', [ThreadController::class, 'createThread'])->name('create:thread');

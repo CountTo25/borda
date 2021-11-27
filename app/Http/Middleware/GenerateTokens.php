@@ -28,7 +28,8 @@ class GenerateTokens
             $token = (string) $token;
             $request->merge(compact('token'));
         } else {
-            if ((Token::firstWhere('id', $token = $request->cookie('LARABA-TOKEN'))) === null) {
+            $token = $request->cookie('LARABA-TOKEN');
+            if ((Token::firstWhere('token', $token)) === null) {
                 Token::create(compact('token'));
                 $request->merge(compact('token'));
             }

@@ -4,6 +4,7 @@
     import type Board from "../Models/Board";
     import Routing from "../Router/Support/Routing";
     import type Thread from "../Models/Thread";
+    import { pushSubscription } from "../Storage/Toolbar";
 
     export let thread: Thread;
 
@@ -31,7 +32,10 @@
                 formData.append(key, postData[key])}
         );
         
-        API.createPost(formData).then(r => dispatch('sent'));
+        API.createPost(formData).then(r => {
+            dispatch('sent'); 
+            pushSubscription(thread);
+        });
     }
 
     $:imageCount = postData.images.length < 4 ? postData.images.length + 1 : 4;

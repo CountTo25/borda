@@ -151,3 +151,10 @@ a:hover {
 .toolbar .content {
     padding: 5px;
 }
+
+.icon {
+    display: inline-block;
+    height: 1rem;
+    width: 1rem;
+    vertical-align: middle;
+}
