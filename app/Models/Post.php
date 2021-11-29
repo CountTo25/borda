@@ -47,7 +47,7 @@ class Post extends Model
         static::creating(function(Post $model) {
             $model->ip = request()->ip() ?? 'undefined';
             $model->fingerprint = app(Dactyloscopy::class)->make();
-            $model->token = request()->cookie('LARABA_TOKEN');
+            $model->token = request()->cookie('LARABA-TOKEN');
         });
         parent::boot();
     }

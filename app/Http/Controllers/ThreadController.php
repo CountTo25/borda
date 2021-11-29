@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewReply;
 use App\Http\Requests\NewPostRequest;
 use App\Http\Requests\NewThreadRequest;
 use App\Models\Board;
@@ -23,27 +24,21 @@ class ThreadController extends Controller
     //
     public function createPost(NewPostRequest $request, ReplyParser $replyParser): JsonResponse
     {
-
         $data = $request->validated();
         /** @var Thread $thread */
         $thread = Thread::with('board')->firstWhere('id', $data['thread_id']);
-
         if (!array_key_exists('user_name', $data) || $data['user_name'] === null) {
             $data['user_name'] = $thread->board->default_username;
         }
-
         $postable = (array_key_exists('content', $data) || $this->hasImages($data));
-
         if (!$postable) {
             return response()->json([
                 'error' => 'Unable to create post. Post needs either a picture or an image'
             ], 403);
         }
-
         if ($thread->post_count >= $thread->board->bump_limit) {
             $thread->timestamps = false;
         }
-
         $post = null;
         $replies = $replyParser->handle($data['content']);
         DB::transaction(function() use ($data, $thread, &$post, $replies) {
@@ -55,7 +50,6 @@ class ThreadController extends Controller
             }
 
             $thread->update(['post_count' => $thread->post_count + 1]);
-
             $forFilling = collect($replies)
                 ->map(function ($entry) use ($post) {
                     return [
@@ -73,17 +67,16 @@ class ThreadController extends Controller
                 $token->subscriptions()->attach($thread);
             }
         });
+        NewReply::dispatch($post);
         return response()->json(['success' => 'created', 'post_id' => $post->id]);
     }
 
-    public function createThread(NewThreadRequest $request): JsonResponse {
-
+    public function createThread(NewThreadRequest $request): JsonResponse
+    {
         $data = $request->validated();
-
         if (array_key_exists('content', $data) && $data['content'] !== null) {
             $data['content'] = strip_tags($data['content']);
         }
-
         $post = null;
         DB::transaction(function() use ($data, &$post) {
             /** @var Thread $thread */
@@ -99,7 +92,6 @@ class ThreadController extends Controller
             }
             $thread->update(['first_post_id' => $post->id]);
         });
-
         return response()->json(['thread_id' => $post->id]);
     }
 

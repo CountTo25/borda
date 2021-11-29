@@ -16,10 +16,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/super/test/ok/buddy', function(\App\Services\Dactyloscopy $dactyloscopy) {
-    return $dactyloscopy->make();
-});
-
 Route::middleware('generate.tokens')->group(function () {
     Route::get('/', fn (Prefetcher $prefetch) => view('spa')->with($prefetch->get()))->name('view:app');
     Route::get('/{board}', fn (Prefetcher $prefetch) => view('spa')->with($prefetch->get()))->name('view:board');

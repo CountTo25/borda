@@ -10,22 +10,16 @@ use Illuminate\Support\Str;
 
 class GenerateTokens
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @return mixed
-     */
     public function handle(Request $request, Closure $next)
     {
-        /** @var Response $response */
+        $created = null;
         if ((!$request->hasCookie('LARABA-TOKEN'))) {
             do {
                 $token = Str::of(Str::random(10))->upper();
             } while (Token::firstWhere(compact('token')) !== null);
             Token::create(compact('token'));
             $token = (string) $token;
+            $created = $token;
             $request->merge(compact('token'));
         } else {
             $token = $request->cookie('LARABA-TOKEN');
@@ -35,6 +29,11 @@ class GenerateTokens
             }
         }
 
-        return $next($request);
+        /** @var Response $response */
+        $response = $next($request);
+
+        $response->withCookie(cookie()->forever('LARABA-TOKEN', $created));
+
+        return $response;
     }
 }
