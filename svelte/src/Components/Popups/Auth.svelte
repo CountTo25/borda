@@ -1,11 +1,12 @@
 <script lang="ts">
 import Cookies from "js-cookie";
 
-    import API from "../../API";
-    import { toolbar, consumePrepender } from "../../Storage/Toolbar";
-    let cookie = Cookies.get('LARABA-TOKEN');
-    let inputToken: string = $toolbar.token ?? cookie !== undefined ? cookie : null;
+import API from "../../API";
+import { toolbar, consumePrepender } from "../../Storage/Toolbar";
+let cookie = Cookies.get('LARABA-TOKEN');
+let inputToken: string = $toolbar.token ?? null;
 
+console.log(inputToken);
 
     function applyToken(): void
     {

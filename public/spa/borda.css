@@ -26,9 +26,6 @@
     transition: 0.5s all;
 }
 
-.thread-body .thread-content{
-}
-
 .thread-body img {
     max-height: 150px;
     border-radius: 5px;

@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Events\NewReply;
-use App\Jobs\CheckSelfEmployment;
 use App\Models\Post;
 use App\Models\Thread;
 use App\Models\Token;
@@ -71,5 +70,35 @@ class SubscriptionTest extends TestCase
         $response->assertOk();
 
         Event::assertDispatched(NewReply::class);
+    }
+
+    public function test_manual_subscription() {
+        /** @var Token $token */
+        $token = Token::first();
+        $subs = $token->subscriptions->count();
+        /** @var Thread $thread */
+        $thread = Thread::first();
+        $response = $this->post(route('token:subscribe'), [
+            'token' => $token->token,
+            'thread_id' => $thread->id,
+        ]);
+        $response->assertOk();
+        $token = $token->fresh('subscriptions');
+        $this->assertTrue($token->subscriptions->count() === ($subs + 1));
+    }
+
+    public function test_manual_unsubscription() {
+        /** @var Token $token */
+        $token = Token::first();
+        $subs = $token->subscriptions->count();
+        /** @var Thread $thread */
+        $thread = Thread::first();
+        $response = $this->post(route('token:unsubscribe'), [
+            'token' => $token->token,
+            'thread_id' => $thread->id,
+        ]);
+        $response->assertOk();
+        $token = $token->fresh('subscriptions');
+        $this->assertTrue($token->subscriptions->count() === ($subs - 1));
     }
 }

@@ -58,6 +58,9 @@
     <div class='col-2 text-end py-1'>
         <span class='button px-1' on:click={toggleToolbar}>
             Подписки
+            {#if $toolbar.hasNotifications}
+                {$toolbar.getUnreadCount()}
+            {/if}
         </span>
     </div>
 </div>

@@ -28,8 +28,8 @@ Route::prefix('internal/v1/')->group(function() {
     Route::post('/token/apply', [TokenController::class, 'apply'])->name('apply:token');
 
     Route::prefix('thread')->group(function() {
-        Route::post('subscribe', [TokenController::class, 'subscribe']);
-        Route::post('unsubscribe', [TokenController::class, 'unsubscribe']);
+        Route::post('subscribe', [TokenController::class, 'subscribe'])->name('token:subscribe');
+        Route::post('unsubscribe', [TokenController::class, 'unsubscribe'])->name('token:unsubscribe');
     });
 
     Route::prefix('create')->group(function() {

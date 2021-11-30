@@ -9,9 +9,6 @@
     let highlight: boolean;
     $:highlight = $rendering.highlight == post.id;
     let hasImages: boolean = post.images.length > 0;
-
-    console.log(post);
-
     const componentMap = {
         'reference': ReferenceText,
         'plain': PlainText,

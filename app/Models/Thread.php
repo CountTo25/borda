@@ -17,6 +17,7 @@ use Staudenmeir\EloquentEagerLimit\HasEagerLimit;
  * @property int $board_id
  * @property int $post_count
  * @property int $first_post_id
+ * @property int $id
  *
  * @property-read Board $board
  * @property-read Collection<Post> $latestPosts

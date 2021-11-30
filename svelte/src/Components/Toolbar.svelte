@@ -13,7 +13,7 @@ $: hasThreads = $toolbar.threads.length !== 0;
     {:else}
         {#each $toolbar.threads as thread}
             <div class='toolbar-thread'>
-                @{thread.id} — {thread.title}: {thread.post_count - 1}
+                @{thread.id} — {thread.title}: {thread.post_count - 1} {thread.unreadPostCount === 0 ? '': `(${thread.unreadPostCount})`}
             </div>
         {/each}
     {/if}

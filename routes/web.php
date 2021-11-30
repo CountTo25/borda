@@ -21,3 +21,7 @@ Route::middleware('generate.tokens')->group(function () {
     Route::get('/{board}', fn (Prefetcher $prefetch) => view('spa')->with($prefetch->get()))->name('view:board');
     Route::get('/{board}/{thread}', fn (Prefetcher $prefetch) => view('spa')->with($prefetch->get()))->name('view:thread');
 });
+
+Route::get('/super/test/ok/dude', function() {
+    \App\Events\NewReply::dispatch(\App\Models\Post::first());
+});

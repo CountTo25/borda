@@ -29,4 +29,6 @@ export default class Thread extends Model {
     public title: string;
     public created_at: moment.Moment;
     public post_count: number;
+    //runtime
+    public unreadPostCount: number = 0;
 }

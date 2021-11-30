@@ -13,6 +13,7 @@ class GenerateTokens
     public function handle(Request $request, Closure $next)
     {
         $created = null;
+
         if ((!$request->hasCookie('LARABA-TOKEN'))) {
             do {
                 $token = Str::of(Str::random(10))->upper();
@@ -32,7 +33,12 @@ class GenerateTokens
         /** @var Response $response */
         $response = $next($request);
 
-        $response->withCookie(cookie()->forever('LARABA-TOKEN', $created));
+        if ($created !== null) {
+            $response->withCookie(cookie()->forever(
+                'LARABA-TOKEN', $created, null, null,
+                false, false
+            ));
+        }
 
         return $response;
     }
